@@ -1,0 +1,14 @@
+{
+    "require": {
+        "slim/slim": "^3.10",
+        "monolog/monolog": "1.23.0"
+    },
+  "config": {
+        "sort-packages": true
+},
+   "autoload":{
+       "psr-4": {
+          "": "src/"
+       }
+   }
+}

@@ -1,13 +1,17 @@
-## Instillation
- 1. Install [git.](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
- 2. Install Docker for [Mac](https://docs.docker.com/docker-for-mac/install/), or for [Windows](https://docs.docker.com/docker-for-windows/install/).
- 3. Clone this [project](https://github.com/rioseo/code-assessment-php) project that is based off of the [Slim Framework](https://www.slimframework.com/)
- 4. Install dependencies with Composer
+## Prerequisites
+ 1. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+ 2. Install Docker for [Mac](https://docs.docker.com/docker-for-mac/install/), or for [Windows](https://docs.docker.com/)
+
+## Installation
+ 1. Clone this [project](https://github.com/rioseo/code-assessment-php) project that is based off of the [Slim Framework](https://www.slimframework.com/)
+ 2. Change to the project directory from the command line
+ 3. Install dependencies with Composer
     * Install [Composer](https://symfony.com/doc/2.5/cookbook/composer.html) locally and run composer install for the project.
     * Or Run Composer from [Docker](https://docs.docker.com/samples/library/composer/).
+ 4. Start the project container with the command "docker-compose up -d"
 
 ## Project
-The company has data for their locations and employees but does not have a clean record of with employees work and which locations. HR has requested a software solution for assigning the employees to locations.
+The company has data for their locations and employees but does not have a clean record of which employees work at which locations. HR has requested a software solution for assigning the employees to locations.
  1. Initialize your database using the files in the "data" directory
  2. We have the data of locations and employees but need an interface for assigning employees to the location(s) that they work at. Design a simple employee manager system with the following parameters:
     * All employees are associated to a single job title.

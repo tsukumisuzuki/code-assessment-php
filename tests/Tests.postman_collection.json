@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "aa1918bc-3a4d-4dbe-8dc9-7d5f2ce39d9d",
+		"name": "Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost/api/employee/1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3820ef62-08f6-464d-bdd9-c62716f0a4e9",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matches JSON ID\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.id).to.equal('1'); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matches JSON first_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.first_name).to.equal('Cathrin'); \r",
+							"});\r",
+							"pm.test(\"Matches JSON last_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.last_name).to.equal('Weiser'); \r",
+							"});\r",
+							"pm.test(\"Matches JSON email\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.email).to.equal('cweiser0@purevolume.com'); \r",
+							"});\r",
+							"pm.test(\"Matches JSON job_title_id\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.job_title_id).to.equal('1'); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost/api/employee/1",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

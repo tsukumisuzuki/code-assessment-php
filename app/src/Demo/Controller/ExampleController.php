@@ -32,14 +32,20 @@ class ExampleController
         return $response;
     }
 
+    public function getConnection() {
+        $servername=$this->container['settings']['db']['host'] ;
+        $username=$this->container['settings']['db']['user'] ;
+        $password=$this->container['settings']['db']['pass'] ;
+        $dbname=$this->container['settings']['db']['dbname'] ;
+        $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        return $dbh;
+    }
+
     public function getEmployees($response) {
         try {
-            $servername=$this->container['settings']['db']['host'] ;
-            $username=$this->container['settings']['db']['user'] ;
-            $password=$this->container['settings']['db']['pass'] ;
-            $dbname=$this->container['settings']['db']['dbname'] ;
-            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dbh = ExampleController::getConnection();
 
             $sql = "SELECT * FROM employees";
             $stmt = $dbh->query($sql);
@@ -54,12 +60,7 @@ class ExampleController
     public function getEmployee(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
-            $servername=$this->container['settings']['db']['host'] ;
-            $username=$this->container['settings']['db']['user'] ;
-            $password=$this->container['settings']['db']['pass'] ;
-            $dbname=$this->container['settings']['db']['dbname'] ;
-            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dbh = ExampleController::getConnection();
 
             $sql = "SELECT * FROM employees WHERE id = :id";
             $stmt = $dbh->prepare($sql);

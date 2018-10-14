@@ -39,11 +39,8 @@ $app->group('/', function () {
     $this->get('', \Demo\Controller\ExampleController::class . ':getDefault')->setName('get-default');
 });
 
-// API group
-$app->group('/api', function () use ($app) {
-    // Version group
-	$app->get('/employees', \Demo\Controller\ExampleController::class . ':getEmployees');
-  $app->get('/employee/{id}', \Demo\Controller\ExampleController::class . ':getEmployee');
-});
+// api routes
+require __DIR__ . '/../src/Demo/routes.php';
+
 
 $app->run();

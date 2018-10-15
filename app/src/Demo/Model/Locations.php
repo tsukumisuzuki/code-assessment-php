@@ -74,6 +74,28 @@ class Locations
         }
     }
 
+    /**
+     * @param Request $request
+     * @return JSON
+     */
+    public function getLocationByName(Request $request) {
+        try {
+            $name = $request->getAttribute('name');
+            $dbh = Locations::getConnection();
+
+            $sql = "SELECT *
+                FROM locations
+                WHERE location_name = :name";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam('name', $name);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+            return json_encode($result);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
 
     /**
      * @param Request $request

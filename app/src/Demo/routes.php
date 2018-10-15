@@ -17,6 +17,9 @@ $app->group('/api', function () use ($app) {
   $app->group('/location', function () use ($app) {
   	$app->get('/', \Demo\Model\Locations::class . ':getLocations');
     $app->get('/{id}', \Demo\Model\Locations::class . ':getLocation');
+    $app->post('/', \Demo\Model\Locations::class . ':createLocation');
+    $app->put('/{id}', \Demo\Model\Locations::class . ':updateLocation');
+    $app->delete('/{id}', \Demo\Model\Locations::class . ':deleteLocation');
   });
 });
 

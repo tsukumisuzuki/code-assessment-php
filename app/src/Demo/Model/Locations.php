@@ -73,4 +73,118 @@ class Locations
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
     }
+
+
+    /**
+     * @param Request $request
+     * @return JSON
+     */
+    public function createLocation(Request $request) {
+        try {
+            $location = json_decode($request->getBody());
+            $dbh = Locations::getConnection();
+
+            $sql = "INSERT INTO locations
+                (location_name, address, city, state, latitude, longitude, phone, country, postal_code)
+                VALUES (:location_name, :address, :city, :state, :latitude, :longitude, :phone, :country, :postal_code)";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam('location_name', $location->location_name);
+            $stmt->bindParam('address', $location->address);
+            $stmt->bindParam('city', $location->city);
+            $stmt->bindParam('state', $location->state);
+            $stmt->bindParam('latitude', $location->latitude);
+            $stmt->bindParam('longitude', $location->longitude);
+            $stmt->bindParam('phone', $location->phone);
+            $stmt->bindParam('country', $location->country);
+            $stmt->bindParam('postal_code', $location->postal_code);
+            $stmt->execute();
+            $location->id = $dbh->lastInsertId();
+
+
+            return json_encode($location);
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JSON
+     */
+    public function updateLocation(Request $request) {
+        try {
+            $id = $request->getAttribute('id');
+            $location = json_decode($request->getBody());
+            $dbh = Locations::getConnection();
+
+            $select_sql = "SELECT * FROM locations WHERE locations.id = :id";
+            $stmt = $dbh->prepare($select_sql);
+            $stmt->bindParam('id', $id);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+            if($result) {
+                $update_sql = "UPDATE locations
+                    SET
+                    location_name=:location_name,
+                    address=:address,
+                    city=:city,
+                    state=:state,
+                    latitude=:latitude,
+                    longitude=:longitude,
+                    phone=:phone,
+                    country=:country,
+                    postal_code=:postal_code
+                    WHERE id=:id";
+                $stmt = $dbh->prepare($update_sql);
+                $stmt->bindParam('location_name', $location->location_name);
+                $stmt->bindParam('address', $location->address);
+                $stmt->bindParam('city', $location->city);
+                $stmt->bindParam('state', $location->state);
+                $stmt->bindParam('latitude', $location->latitude);
+                $stmt->bindParam('longitude', $location->longitude);
+                $stmt->bindParam('phone', $location->phone);
+                $stmt->bindParam('country', $location->country);
+                $stmt->bindParam('postal_code', $location->postal_code);
+                $stmt->bindParam('id', $id);
+                $stmt->execute();
+
+                return json_encode($location);
+            } else {
+                echo '{"error":{"text": "id does not exist" }}';
+            }
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JSON
+     */
+    public function deleteLocation(Request $request) {
+        try {
+            $id = $request->getAttribute('id');
+            $dbh = Locations::getConnection();
+
+            $select_sql = "SELECT * FROM locations WHERE locations.id = :id";
+            $stmt = $dbh->prepare($select_sql);
+            $stmt->bindParam('id', $id);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+            if($result) {
+                $delete_sql = "DELETE FROM locations WHERE locations.id = :id";
+                $stmt = $dbh->prepare($delete_sql);
+                $stmt->bindParam('id', $id);
+                $stmt->execute();
+
+                echo '{"success":{"text": "success" }}';
+            } else {
+                echo '{"error":{"text": "id does not exist" }}';
+            }
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
 }

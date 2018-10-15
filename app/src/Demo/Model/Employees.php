@@ -7,7 +7,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use PDO;
 
-class Project
+class Employees
 {
     /**
      * @var ContainerInterface
@@ -38,7 +38,7 @@ class Project
      */
     public function getEmployees() {
         try {
-            $dbh = Project::getConnection();
+            $dbh = Employees::getConnection();
 
             $sql = "SELECT *
             FROM employees, job_titles
@@ -59,7 +59,7 @@ class Project
     public function getEmployee(Request $request) {
         try {
             $id = $request->getAttribute('id');
-            $dbh = Project::getConnection();
+            $dbh = Employees::getConnection();
 
             $sql = "SELECT *
                 FROM employees, job_titles
@@ -70,25 +70,11 @@ class Project
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_OBJ);
 
-            return json_encode($result);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-    }
-
-    /**
-     * @return JSON
-     */
-    public function getJobTitles() {
-        try {
-            $dbh = Project::getConnection();
-
-            $sql = "SELECT *
-            FROM job_titles";
-            $stmt = $dbh->query($sql);
-            $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-            return json_encode($result);
+            if($result) {
+                return json_encode($result);
+            } else {
+                echo '{"error":{"text": "id does not exist" }}';
+            }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
@@ -98,38 +84,24 @@ class Project
      * @param Request $request
      * @return JSON
      */
-    public function getJobTitle(Request $request) {
+    public function createEmployee(Request $request) {
         try {
-            $id = $request->getAttribute('id');
-            $dbh = Project::getConnection();
+            $employee = json_decode($request->getBody());
+            $dbh = Employees::getConnection();
 
-            $sql = "SELECT *
-                FROM job_titles
-                WHERE id = :id";
+            $sql = "INSERT INTO employees
+                (first_name, last_name, email, job_title_id)
+                VALUES (:first_name, :last_name, :email, :job_title_id)";
             $stmt = $dbh->prepare($sql);
-            $stmt->bindParam('id', $id);
+            $stmt->bindParam('first_name', $employee->first_name);
+            $stmt->bindParam('last_name', $employee->last_name);
+            $stmt->bindParam('email', $employee->email);
+            $stmt->bindParam('job_title_id', $employee->job_title_id);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_OBJ);
+            $employee->id = $dbh->lastInsertId();
 
-            return json_encode($result);
-        } catch(PDOException $e) {
-            echo '{"error":{"text":'. $e->getMessage() .'}}';
-        }
-    }
 
-    /**
-     * @return JSON
-     */
-    public function getLocations() {
-        try {
-            $dbh = Project::getConnection();
-
-            $sql = "SELECT *
-            FROM locations";
-            $stmt = $dbh->query($sql);
-            $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-            return json_encode($result);
+            return json_encode($employee);
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
@@ -139,20 +111,68 @@ class Project
      * @param Request $request
      * @return JSON
      */
-    public function getLocation(Request $request) {
+    public function updateEmployee(Request $request) {
         try {
             $id = $request->getAttribute('id');
-            $dbh = Project::getConnection();
+            $employee = json_decode($request->getBody());
+            $dbh = Employees::getConnection();
 
-            $sql = "SELECT *
-                FROM locations
-                WHERE id = :id";
-            $stmt = $dbh->prepare($sql);
+            $select_sql = "SELECT * FROM employees WHERE employees.id = :id";
+            $stmt = $dbh->prepare($select_sql);
             $stmt->bindParam('id', $id);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_OBJ);
 
-            return json_encode($result);
+            if($result) {
+                $sql = "UPDATE employees
+                    SET
+                    first_name=:first_name,
+                    last_name=:last_name,
+                    email=:email,
+                    job_title_id=:job_title_id
+                    WHERE id=:id";
+                $stmt = $dbh->prepare($sql);
+                $stmt->bindParam('first_name', $employee->first_name);
+                $stmt->bindParam('last_name', $employee->last_name);
+                $stmt->bindParam('email', $employee->email);
+                $stmt->bindParam('job_title_id', $employee->job_title_id);
+                $stmt->bindParam('id', $id);
+                $stmt->execute();
+
+                return json_encode($employee);
+            } else {
+                echo '{"error":{"text": "id does not exist" }}';
+            }
+        } catch(PDOException $e) {
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JSON
+     */
+    public function deleteEmployee(Request $request) {
+        try {
+            $id = $request->getAttribute('id');
+            $dbh = Employees::getConnection();
+
+            $select_sql = "SELECT * FROM employees WHERE employees.id = :id";
+            $stmt = $dbh->prepare($select_sql);
+            $stmt->bindParam('id', $id);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+            if($result) {
+                $delete_sql = "DELETE FROM employees WHERE employees.id = :id";
+                $stmt = $dbh->prepare($delete_sql);
+                $stmt->bindParam('id', $id);
+                $stmt->execute();
+
+                echo '{"success":{"text": "success" }}';
+            } else {
+                echo '{"error":{"text": "id does not exist" }}';
+            }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }

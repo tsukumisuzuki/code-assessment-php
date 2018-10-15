@@ -1,3 +1,6 @@
+## THIS IS A CLONED PROJECT
+SEE ORIGINAL AT https://github.com/rioseo/code-assessment-php
+
 ## Prerequisites
  1. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
  2. Install Docker for [Mac](https://docs.docker.com/docker-for-mac/install/), or for [Windows](https://docs.docker.com/)
@@ -25,6 +28,6 @@ The company has data for their locations and employees but does not have a clean
  2. Completeness counts. Don't forget the stuff you would do for a normal project (like tests and formatting).
  3. Create tests for QA (i.e. unit, Postman).
  4. Track your work with Git.
-  
+
 ## Submission
 Ask any questions as these requirements may not be complete. When ready, submit your results in either a Git patch file, a link to an accessablie Git repo, or a simple zip file.

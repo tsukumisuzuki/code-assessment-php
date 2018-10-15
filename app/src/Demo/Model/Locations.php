@@ -55,7 +55,7 @@ class Locations
      * @param Request $request
      * @return JSON
      */
-    public function getLocation(Request $request) {
+    public function getLocation(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
             $dbh = Locations::getConnection();
@@ -68,7 +68,12 @@ class Locations
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_OBJ);
 
-            return json_encode($result);
+            if($result) {
+                return json_encode($result);
+            } else {
+                return $response->withStatus(404)->write("id not found");
+            }
+
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
@@ -78,7 +83,7 @@ class Locations
      * @param Request $request
      * @return JSON
      */
-    public function getLocationByName(Request $request) {
+    public function getLocationByName(Request $request, Response $response) {
         try {
             $name = $request->getAttribute('name');
             $dbh = Locations::getConnection();
@@ -133,7 +138,7 @@ class Locations
      * @param Request $request
      * @return JSON
      */
-    public function updateLocation(Request $request) {
+    public function updateLocation(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
             $location = json_decode($request->getBody());
@@ -173,7 +178,7 @@ class Locations
 
                 return json_encode($location);
             } else {
-                echo '{"error":{"text": "id does not exist" }}';
+                return $response->withStatus(404)->write("id not found");
             }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -184,7 +189,7 @@ class Locations
      * @param Request $request
      * @return JSON
      */
-    public function deleteLocation(Request $request) {
+    public function deleteLocation(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
             $dbh = Locations::getConnection();
@@ -201,9 +206,9 @@ class Locations
                 $stmt->bindParam('id', $id);
                 $stmt->execute();
 
-                echo '{"success":{"text": "success" }}';
+                return '{"success":{"text": "success" }}';
             } else {
-                echo '{"error":{"text": "id does not exist" }}';
+                return $response->withStatus(404)->write("id not found");
             }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';

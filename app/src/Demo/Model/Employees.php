@@ -56,7 +56,7 @@ class Employees
      * @param Request $request
      * @return JSON
      */
-    public function getEmployee(Request $request) {
+    public function getEmployee(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
             $dbh = Employees::getConnection();
@@ -73,7 +73,7 @@ class Employees
             if($result) {
                 return json_encode($result);
             } else {
-                echo '{"error":{"text": "id does not exist" }}';
+                return $response->withStatus(404)->write("id not found");
             }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -111,7 +111,7 @@ class Employees
      * @param Request $request
      * @return JSON
      */
-    public function updateEmployee(Request $request) {
+    public function updateEmployee(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
             $employee = json_decode($request->getBody());
@@ -141,7 +141,7 @@ class Employees
 
                 return json_encode($employee);
             } else {
-                echo '{"error":{"text": "id does not exist" }}';
+                return $response->withStatus(404)->write("id not found");
             }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -152,7 +152,7 @@ class Employees
      * @param Request $request
      * @return JSON
      */
-    public function deleteEmployee(Request $request) {
+    public function deleteEmployee(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
             $dbh = Employees::getConnection();
@@ -169,9 +169,9 @@ class Employees
                 $stmt->bindParam('id', $id);
                 $stmt->execute();
 
-                echo '{"success":{"text": "success" }}';
+                return '{"success":{"text": "success" }}';
             } else {
-                echo '{"error":{"text": "id does not exist" }}';
+                return $response->withStatus(404)->write("id not found");
             }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';

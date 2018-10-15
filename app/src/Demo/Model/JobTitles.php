@@ -55,7 +55,7 @@ class JobTitles
      * @param Request $request
      * @return JSON
      */
-    public function getJobTitle(Request $request) {
+    public function getJobTitle(Request $request, Response $response) {
         try {
             $id = $request->getAttribute('id');
             $dbh = JobTitles::getConnection();
@@ -68,7 +68,11 @@ class JobTitles
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_OBJ);
 
-            return json_encode($result);
+            if($result) {
+                return json_encode($result);
+            } else {
+                return $response->withStatus(404)->write("id not found");
+            }
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }

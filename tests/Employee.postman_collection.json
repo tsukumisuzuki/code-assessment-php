@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "aa1918bc-3a4d-4dbe-8dc9-7d5f2ce39d9d",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Employee 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3820ef62-08f6-464d-bdd9-c62716f0a4e9",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matches JSON ID\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.id).to.equal('1'); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matches JSON first_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.first_name).to.equal('Cathrin'); \r",
+							"});\r",
+							"pm.test(\"Matches JSON last_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.last_name).to.equal('Weiser'); \r",
+							"});\r",
+							"pm.test(\"Matches JSON email\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.email).to.equal('cweiser0@purevolume.com'); \r",
+							"});\r",
+							"pm.test(\"Matches JSON job_title_id\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.job_title_id).to.equal('1'); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"first_name\": \"TEST2_FIRST\",\n\t\"last_name\": \"TEST2_LAST\",\n\t\"email\": \"TEST2@TEST.COM\",\n\t\"job_title_id\": \"4\"\n}"
+				},
+				"url": {
+					"raw": "localhost/api/employee/1",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ab178ed9-9293-462f-a8f9-045e288f3752",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"employee_id\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"Matches JSON first_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.first_name).to.equal(\"Test First\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON last_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.last_name).to.equal(\"Test Last\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON email\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.email).to.equal(\"test@test.com\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON job_title_id\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.job_title_id).to.equal('1'); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"first_name\" : \"Test First\",\n\t\"last_name\" : \"Test Last\",\n\t\"email\" : \"test@test.com\",\n\t\"job_title_id\" : \"1\"\n}"
+				},
+				"url": {
+					"raw": "localhost/api/employee/",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Created Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "028d4187-804c-49e1-a202-d9c4ad419fc7",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matches JSON first_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.first_name).to.equal(\"Test First\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON last_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.last_name).to.equal(\"Test Last\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON email\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.email).to.equal(\"test@test.com\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON job_title_id\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.job_title_id).to.equal('1'); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost/api/employee/{{employee_id}}",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						"{{employee_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Created Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "028d4187-804c-49e1-a202-d9c4ad419fc7",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matches JSON first_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.first_name).to.equal(\"Test Update First\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON last_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.last_name).to.equal(\"Test Update Last\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON email\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.email).to.equal(\"testupdate@test.com\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON job_title_id\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.job_title_id).to.equal('2'); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"first_name\" : \"Test Update First\",\n\t\"last_name\" : \"Test Update Last\",\n\t\"email\" : \"testupdate@test.com\",\n\t\"job_title_id\" : \"2\"\n}"
+				},
+				"url": {
+					"raw": "localhost/api/employee/{{employee_id}}",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						"{{employee_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Updated Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "028d4187-804c-49e1-a202-d9c4ad419fc7",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Matches JSON first_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.first_name).to.equal(\"Test Update First\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON last_name\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.last_name).to.equal(\"Test Update Last\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON email\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.email).to.equal(\"testupdate@test.com\"); \r",
+							"});\r",
+							"pm.test(\"Matches JSON job_title_id\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.job_title_id).to.equal('2'); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost/api/employee/{{employee_id}}",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						"{{employee_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Updated Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "028d4187-804c-49e1-a202-d9c4ad419fc7",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Successful Delete\", function () { \r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.expect(data.success.text).to.equal(\"success\"); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost/api/employee/{{employee_id}}",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						"{{employee_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Deleted Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "028d4187-804c-49e1-a202-d9c4ad419fc7",
+						"exec": [
+							"pm.test(\"Successful Request\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Successful Delete\", function () { \r",
+							"    pm.expect(responseBody).to.equal(\"id not found\");\r",
+							"    //var data = JSON.parse(responseBody);\r",
+							"    //pm.expect(data.error.text).to.equal(\"id does not exist\"); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost/api/employee/{{employee_id}}",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"employee",
+						"{{employee_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
